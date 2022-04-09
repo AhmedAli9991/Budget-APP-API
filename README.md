@@ -8,6 +8,7 @@ this is an API built using FastAPI this api helps user manage their expenses it 
 - Postgres
 - SQLAlchemy
 - Alembic
+- Pydantic
 
 ### Features
 ##### Authentication
