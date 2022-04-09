@@ -1,6 +1,6 @@
 # Budget-APP-API
 this is an API built using FastAPI this api helps user manage their expenses it uses JWT for authentication
-### technologies used
+### tools used
 
 - FastAPI
 - JWT
@@ -9,6 +9,7 @@ this is an API built using FastAPI this api helps user manage their expenses it 
 - SQLAlchemy
 - Alembic
 - Pydantic
+- Postman
 
 ### Features
 ##### Authentication
