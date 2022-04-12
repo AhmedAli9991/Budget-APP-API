@@ -48,6 +48,6 @@ def get_current_user(response:Response,ACCESS_TOKEN: Optional[str] = Cookie(None
     decoded= verify_token(ACCESS_TOKEN,ACCESS_KEY,ALGORITHM)
     ACCESS_TOKEN=create_tokens(decoded,ACCESS_KEY,ALGORITHM,ACCESS_TOKEN_EXPIRE)
     REFRESH_TOKEN=create_tokens(decoded,REFRESH_KEY,ALGORITHM,REFRESH_TOKEN_EXPIRE)
-    response.set_cookie(key="ACCESS_TOKEN",value=ACCESS_TOKEN,max_age=60000,httponly=true)
-    response.set_cookie(key="REFRESH_TOKEN",value=REFRESH_TOKEN,max_age=90000,httponly=true)   
+    response.set_cookie(key="ACCESS_TOKEN",value=ACCESS_TOKEN,max_age=300000,httponly=true)
+    response.set_cookie(key="REFRESH_TOKEN",value=REFRESH_TOKEN,max_age=900000,httponly=true)   
     return decoded

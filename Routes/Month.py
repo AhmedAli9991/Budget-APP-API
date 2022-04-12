@@ -3,15 +3,19 @@ from pydantic_schemas import pydantic_Month
 from Utils.JWT import get_current_user
 from DB.db_setup import get_db
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 from typing import List
 from DB.SQL_Alchemy_Models.Models_Month import Month 
+from DB.SQL_Alchemy_Models.Models_Transactions import Transaction 
+
 router = APIRouter()
 
-@router.get('/getMonth',status_code=status.HTTP_200_OK, response_model= List[pydantic_Month.out_Month])
+@router.get('/getMonth',status_code=status.HTTP_200_OK)
 def get_months(db: Session = Depends(get_db),current_user = Depends(get_current_user)):
     if(current_user==None):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
-    months = db.query(Month).filter(Month.user_id==current_user["id"]).all()
+   # months = db.query(Month).filter(Month.user_id==current_user["id"]).all()
+    months =db.query(Month,func.sum(Transaction.amount).label('amount')).join(Transaction,Month.id==Transaction.month_id,isouter=True).filter(Month.user_id==current_user["id"]).group_by(Month.id).all()
     return months
 
 @router.post('/addMonth',status_code=status.HTTP_201_CREATED, response_model= pydantic_Month.out_Month)

@@ -23,11 +23,10 @@ def login(User:pydantic_Users.base_user,response:Response,db: Session = Depends(
     checkpass = verify(User.password,found.password)
     if not checkpass:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Invalid password")    
-    print("\n",found,"\n")
     data={"id":found.id,"name":found.name,"email":found.email}
     ACCESS_TOKEN=create_tokens(data,ACCESS_KEY,ALGORITHM,ACCESS_TOKEN_EXPIRE)
     REFRESH_TOKEN=create_tokens(data,REFRESH_KEY,ALGORITHM,REFRESH_TOKEN_EXPIRE)
-    response.set_cookie(key="ACCESS_TOKEN",value=ACCESS_TOKEN,max_age=60000,httponly=True)
+    response.set_cookie(key="ACCESS_TOKEN",value=ACCESS_TOKEN,max_age=300000,httponly=True)
     response.set_cookie(key="REFRESH_TOKEN",value=REFRESH_TOKEN,max_age=900000,httponly=True)
     return found 
 
@@ -53,3 +52,9 @@ def Logout(response:Response,current_user = Depends(get_current_user)):
         return "deleted cookies"
     else:
         return "cookies do not exist"
+
+@router.get('/Get')
+def getUser(current_user = Depends(get_current_user)):
+    if(current_user):
+        return current_user
+        
